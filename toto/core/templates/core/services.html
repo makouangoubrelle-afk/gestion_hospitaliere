@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Services hospitaliers</h1>
+            <p>Liste des services disponibles dans l'hôpital.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='service_create' %}
+
+    {% if services %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Code</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Heures</th>
+                        <th>Statut</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in services %}
+                        <tr>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.code }}</td>
+                            <td>{{ service.email|default:'-' }}</td>
+                            <td>{{ service.phone|default:'-' }}</td>
+                            <td>
+                                Lun: {{ service.monday_hours }}<br>
+                                Mar: {{ service.tuesday_hours }}<br>
+                                Mer: {{ service.wednesday_hours }}<br>
+                                Jeu: {{ service.thursday_hours }}<br>
+                                Ven: {{ service.friday_hours }}<br>
+                                Sam: {{ service.saturday_hours }}<br>
+                                Dim: {{ service.sunday_hours }}
+                            </td>
+                            <td>{{ service.is_active|yesno:'Actif,Inactif' }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=service edit_url_name='service_update' delete_url_name='service_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucun service n'est encore enregistré.</div>
+    {% endif %}
+</div>
+{% endblock %}

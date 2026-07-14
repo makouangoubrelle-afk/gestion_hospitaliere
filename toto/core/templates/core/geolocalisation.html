@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Géolocalisation</h1>
+            <p>Carte des sites hospitaliers, laboratoires, pharmacies et unités mobiles SGHL.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='site_create' %}
+
+    <div id="map" class="geo-map"></div>
+
+    {% if sites %}
+        <div class="table-wrapper" style="margin-top:1.25rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Site</th>
+                        <th>Type</th>
+                        <th>Adresse</th>
+                        <th>Ville</th>
+                        <th>Coordonnées</th>
+                        <th>Téléphone</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for site in sites %}
+                        <tr>
+                            <td><strong>{{ site.nom }}</strong></td>
+                            <td>{{ site.get_type_lieu_display }}</td>
+                            <td>{{ site.adresse|default:'—' }}</td>
+                            <td>{{ site.ville }}</td>
+                            <td>{{ site.latitude }}, {{ site.longitude }}</td>
+                            <td>{{ site.telephone|default:'—' }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=site edit_url_name='site_update' delete_url_name='site_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state" style="margin-top:1rem;">Aucun site géolocalisé. Ajoutez un site pour l'afficher sur la carte.</div>
+    {% endif %}
+</div>
+
+<style>
+    .geo-map {
+        height: 420px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        z-index: 1;
+    }
+</style>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+(function () {
+    var sites = {{ sites_json|safe }};
+    var defaultCenter = [14.716677, -17.467686];
+    var map = L.map('map').setView(defaultCenter, 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    if (!sites.length) {
+        L.marker(defaultCenter).addTo(map).bindPopup('<strong>SGHL — Dakar</strong><br>Centre par défaut');
+        return;
+    }
+
+    var bounds = [];
+    sites.forEach(function (site) {
+        var latlng = [site.lat, site.lng];
+        bounds.push(latlng);
+        var popup = '<strong>' + site.nom + '</strong><br>' +
+            site.type + '<br>' +
+            (site.adresse ? site.adresse + '<br>' : '') +
+            site.ville +
+            (site.telephone ? '<br>Tél : ' + site.telephone : '');
+        L.marker(latlng).addTo(map).bindPopup(popup);
+    });
+    if (bounds.length > 1) {
+        map.fitBounds(bounds, { padding: [40, 40] });
+    } else {
+        map.setView(bounds[0], 14);
+    }
+})();
+</script>
+{% endblock %}

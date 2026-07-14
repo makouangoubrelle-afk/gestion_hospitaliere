@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Médecins</h1>
+            <p>Liste des médecins disponibles dans l'hôpital.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='medecin_create' %}
+
+    {% if medecins %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Spécialité</th>
+                        <th>Département</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Status</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medecin in medecins %}
+                        <tr>
+                            <td>{{ medecin.full_name }}</td>
+                            <td>{{ medecin.get_specialty_display }}</td>
+                            <td>{{ medecin.department }}</td>
+                            <td>{{ medecin.email }}</td>
+                            <td>{{ medecin.phone }}</td>
+                            <td>{{ medecin.get_status_display }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=medecin edit_url_name='medecin_update' delete_url_name='medecin_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucun médecin n'est encore enregistré.</div>
+    {% endif %}
+</div>
+{% endblock %}

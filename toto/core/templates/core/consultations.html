@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Consultations</h1>
+            <p>Liste des consultations enregistrées.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='consultation_create' %}
+
+    {% if consultations %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Médecin</th>
+                        <th>Type de visite</th>
+                        <th>Date</th>
+                        <th>Durée</th>
+                        <th>Status</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consultation in consultations %}
+                        <tr>
+                            <td>{{ consultation.patient.full_name }}</td>
+                            <td>{% if consultation.medecin %}{{ consultation.medecin.full_name }}{% else %}N/A{% endif %}</td>
+                            <td>{{ consultation.get_visit_type_display }}</td>
+                            <td>{{ consultation.appointment_date|date:'d/m/Y H:i' }}</td>
+                            <td>{{ consultation.duration_minutes }} min</td>
+                            <td><span class="badge">{{ consultation.get_status_display }}</span></td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=consultation edit_url_name='consultation_update' delete_url_name='consultation_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucune consultation n'est encore enregistrée.</div>
+    {% endif %}
+</div>
+{% endblock %}

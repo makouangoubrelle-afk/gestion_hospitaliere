@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Salles d'urgence</h1>
+            <p>Suivi des box d'urgence, occupation et affectation médicale.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='salle_urgence_create' %}
+
+    {% if salles %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Capacité</th>
+                        <th>Statut</th>
+                        <th>Patient</th>
+                        <th>Médecin</th>
+                        <th>Notes</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salle in salles %}
+                        <tr>
+                            <td>{{ salle.code }}</td>
+                            <td>{{ salle.nom }}</td>
+                            <td>{{ salle.capacite }}</td>
+                            <td><span class="badge">{{ salle.get_statut_display }}</span></td>
+                            <td>{{ salle.patient|default:'—' }}</td>
+                            <td>{{ salle.medecin|default:'—' }}</td>
+                            <td>{{ salle.notes|default:'—'|truncatechars:40 }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=salle edit_url_name='salle_urgence_update' delete_url_name='salle_urgence_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucune salle d'urgence configurée.</div>
+    {% endif %}
+</div>
+{% endblock %}

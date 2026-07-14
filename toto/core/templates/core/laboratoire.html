@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Laboratoire (LIS)</h1>
+            <p>Workflow : Commande → Prélèvement → Affectation → Saisie → Validation → Publication</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>N° commande</th>
+                    <th>Patient</th>
+                    <th>Examen</th>
+                    <th>Prescripteur</th>
+                    <th>Statut</th>
+                    <th>PDF</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in commandes %}
+                <tr>
+                    <td>{{ c.numero_commande }}</td>
+                    <td>{{ c.patient.full_name }}</td>
+                    <td>{{ c.type_examen.nom }}</td>
+                    <td>{{ c.medecin_prescripteur }}</td>
+                    <td><span class="badge">{{ c.get_statut_display }}</span></td>
+                    <td>
+                        {% if c.resultat %}
+                        <a href="{% url 'labo_pdf' c.id %}" target="_blank">Rapport PDF</a>
+                        {% else %}—{% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="empty-state">Aucune commande laboratoire.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

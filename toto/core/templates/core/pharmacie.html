@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Pharmacie</h1>
+            <p>Inventaire, lots, péremption, seuils d'alerte et prescriptions électroniques</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='medicament_create' %}
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Médicament / Indication</th>
+                    <th>Code</th>
+                    <th>Forme</th>
+                    <th>Dosage</th>
+                    <th>Stock</th>
+                    <th>Seuil alerte</th>
+                    <th>État</th>
+                    {% if is_admin_user %}<th>Actions</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in medicaments %}
+                <tr>
+                    <td>{{ m.nom }}</td>
+                    <td>{{ m.code }}</td>
+                    <td>{{ m.forme|default:"—" }}</td>
+                    <td>{{ m.dosage|default:"—" }}</td>
+                    <td>{{ m.stock_total }}</td>
+                    <td>{{ m.seuil_alerte }}</td>
+                    <td>
+                        {% if m.stock_total <= m.seuil_alerte %}
+                        <span class="badge" style="background:#fef2f2;color:#b91c1c;">Rupture</span>
+                        {% else %}
+                        <span class="badge">OK</span>
+                        {% endif %}
+                    </td>
+                    {% include 'core/partials/admin_row_actions.html' with obj=m edit_url_name='medicament_update' delete_url_name='medicament_delete' %}
+                </tr>
+                {% empty %}
+                <tr><td colspan="{% if is_admin_user %}8{% else %}7{% endif %}" class="empty-state">Aucun médicament en stock.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

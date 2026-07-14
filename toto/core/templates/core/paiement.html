@@ -1,0 +1,186 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block content %}
+
+<div class="page-card">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Paiements</h1>
+
+            <p>Historique des règlements — MTN Mobile Money, Airtel Mobile Money et carte bancaire.</p>
+
+        </div>
+
+        {% include 'core/partials/home_icon_link.html' %}
+
+    </div>
+
+
+
+    <div class="payment-methods-legend">
+
+        <span class="legend-item mtn">MTN Mobile Money</span>
+
+        <span class="legend-item airtel">Airtel Mobile Money</span>
+
+        <span class="legend-item card">Carte bancaire</span>
+
+    </div>
+
+
+
+    {% if payments %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Référence</th>
+
+                        <th>Facture</th>
+
+                        <th>Patient</th>
+
+                        <th>Montant</th>
+
+                        <th>Méthode</th>
+
+                        <th>Téléphone / Carte</th>
+
+                        <th>Date</th>
+
+                        <th>Statut</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for payment in payments %}
+
+                        <tr>
+
+                            <td>{{ payment.transaction_id|default:'—' }}</td>
+
+                            <td><a href="{% url 'facture_detail' payment.invoice.id %}">{{ payment.invoice.invoice_number }}</a></td>
+
+                            <td>{{ payment.invoice.patient.full_name }}</td>
+
+                            <td>{{ payment.amount }} FCFA</td>
+
+                            <td>
+
+                                <span class="method-badge {{ payment.payment_method }}">
+
+                                    {{ payment.get_payment_method_display }}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                {% if payment.phone_number %}{{ payment.phone_number }}
+
+                                {% elif payment.card_last_four %}**** {{ payment.card_last_four }}
+
+                                {% else %}—{% endif %}
+
+                            </td>
+
+                            <td>{% if payment.payment_date %}{{ payment.payment_date|date:'d/m/Y H:i' }}{% else %}—{% endif %}</td>
+
+                            <td><span class="badge">{{ payment.get_status_display }}</span></td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">Aucun paiement enregistré. <a href="{% url 'factures' %}">Voir les factures</a></div>
+
+    {% endif %}
+
+</div>
+
+
+
+<style>
+
+    .payment-methods-legend {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 0.5rem;
+
+        margin-bottom: 1.25rem;
+
+    }
+
+    .legend-item {
+
+        padding: 0.35rem 0.75rem;
+
+        border-radius: 999px;
+
+        font-size: 0.78rem;
+
+        font-weight: 600;
+
+        color: white;
+
+    }
+
+    .legend-item.mtn { background: #ca8a04; color: #1e293b; }
+
+    .legend-item.airtel { background: #dc2626; }
+
+    .legend-item.card { background: #4f46e5; }
+
+    .method-badge {
+
+        display: inline-block;
+
+        padding: 0.2rem 0.55rem;
+
+        border-radius: 8px;
+
+        font-size: 0.78rem;
+
+        font-weight: 600;
+
+        background: #e2e8f0;
+
+        color: #334155;
+
+    }
+
+    .method-badge.card { background: #e0e7ff; color: #3730a3; }
+
+    .method-badge.airtel_money { background: #fee2e2; color: #991b1b; }
+
+    .method-badge.mtn_momo { background: #fef9c3; color: #854d0e; }
+
+</style>
+
+{% endblock %}
+

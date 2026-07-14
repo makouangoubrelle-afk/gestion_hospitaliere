@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block content %}
+
+<div class="page-card">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Factures</h1>
+
+            <p>Liste des factures émises — consultez le détail et payez en ligne.</p>
+
+        </div>
+
+        {% include 'core/partials/home_icon_link.html' %}
+
+    </div>
+
+
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='invoice_create' %}
+
+
+
+    {% if invoices %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Numéro</th>
+
+                        <th>Patient</th>
+
+                        <th>Date d'émission</th>
+
+                        <th>Montant total</th>
+
+                        <th>Payé</th>
+
+                        <th>Reste</th>
+
+                        <th>Statut</th>
+
+                        <th>Actions</th>
+
+                        {% if is_admin_user %}<th>Admin</th>{% endif %}
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for invoice in invoices %}
+
+                        <tr>
+
+                            <td><a href="{% url 'facture_detail' invoice.id %}">{{ invoice.invoice_number }}</a></td>
+
+                            <td>{{ invoice.patient.full_name }}</td>
+
+                            <td>{{ invoice.issue_date|date:"d/m/Y" }}</td>
+
+                            <td>{{ invoice.total_amount }} FCFA</td>
+
+                            <td>{{ invoice.paid_amount }} FCFA</td>
+
+                            <td>{{ invoice.remaining_amount }} FCFA</td>
+
+                            <td><span class="badge">{{ invoice.get_status_display }}</span></td>
+
+                            <td class="row-actions-inline">
+
+                                <a href="{% url 'facture_detail' invoice.id %}">Détail</a>
+
+                                {% if invoice.remaining_amount > 0 and invoice.status != 'cancelled' %}
+
+                                <a href="{% url 'invoice_pay' invoice.id %}" class="pay-link">Payer</a>
+
+                                {% endif %}
+
+                                <a href="{% url 'invoice_pdf' invoice.id %}" target="_blank">PDF</a>
+
+                            </td>
+
+                            {% include 'core/partials/admin_row_actions.html' with obj=invoice edit_url_name='invoice_update' delete_url_name='invoice_delete' %}
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">Aucune facture n'est encore enregistrée.</div>
+
+    {% endif %}
+
+</div>
+
+
+
+<style>
+
+    .row-actions-inline { display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.85rem; }
+
+    .pay-link { color: #059669 !important; font-weight: 700; }
+
+</style>
+
+{% endblock %}
+

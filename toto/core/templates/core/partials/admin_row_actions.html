@@ -1,0 +1,6 @@
+{% if is_admin_user %}
+<td class="admin-actions">
+    <a href="{% url edit_url_name obj.pk %}" class="action-btn edit" title="Modifier">✏️</a>
+    <a href="{% url delete_url_name obj.pk %}" class="action-btn delete" title="Supprimer">🗑️</a>
+</td>
+{% endif %}

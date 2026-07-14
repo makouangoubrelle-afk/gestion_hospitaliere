@@ -1,0 +1,48 @@
+{% extends 'core/auth_base.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+<h2 style="margin:0 0 0.35rem;font-size:1.45rem;font-weight:800;">{% trans "Connexion" %}</h2>
+<p style="margin:0 0 1.5rem;color:var(--text-muted);font-size:0.95rem;">{% trans "Une seule connexion pour tout le système SGHL" %}</p>
+
+<form method="post" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">
+    {% csrf_token %}
+    {% if request.GET.next %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    {% endif %}
+    <div class="form-group">
+        <label class="form-label" for="id_username">{% trans "Nom d'utilisateur" %}</label>
+        {{ form.username }}
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="id_password">{% trans "Mot de passe" %}</label>
+        <div class="password-field" data-password-toggle>
+            {{ form.password }}
+            <button type="button" class="password-toggle-btn" aria-label="{% trans 'Afficher le mot de passe' %}">
+                <svg class="icon-eye-open" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="icon-eye-closed" viewBox="0 0 24 24" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+        </div>
+    </div>
+    <button type="submit" class="submit-button">{% trans "Se connecter" %}</button>
+</form>
+
+<p style="margin-top:1.25rem;color:var(--text-muted);font-size:0.9rem;">
+    {% trans "Pas encore de compte ?" %} <a href="{% url 'register' %}">{% trans "Créer un compte" %}</a>
+</p>
+
+<div class="demo-credentials">
+    <strong>{% trans "Compte de démonstration" %}</strong>
+    <p>{% trans "Utilisateur" %} : <code>admin</code> — {% trans "Mot de passe" %} : <code>Admin123!</code></p>
+</div>
+
+{% if form.errors %}
+<div class="empty-state">
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% else %}
+        {% trans "Identifiants incorrects. Vérifiez le nom d'utilisateur et le mot de passe." %}
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

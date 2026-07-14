@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Salles d'attente</h1>
+            <p>Zones d'accueil et files d'attente des patients.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% if is_admin_user %}
+    <div class="admin-toolbar">
+        <a href="{% url 'salle_attente_create' %}" class="button-link">+ Ajouter une salle</a>
+        <a href="{% url 'file_attente_create' %}" class="button-link">+ Patient en attente</a>
+    </div>
+    {% endif %}
+
+    <h2 class="section-title">Salles</h2>
+    {% if salles %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Zone</th>
+                        <th>Capacité</th>
+                        <th>En attente</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salle in salles %}
+                        <tr>
+                            <td>{{ salle.code }}</td>
+                            <td>{{ salle.nom }}</td>
+                            <td>{{ salle.zone|default:'—' }}</td>
+                            <td>{{ salle.capacite }}</td>
+                            <td>{{ salle.patients_en_attente }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=salle edit_url_name='salle_attente_update' delete_url_name='salle_attente_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucune salle d'attente active.</div>
+    {% endif %}
+
+    <h2 class="section-title" style="margin-top: 2rem;">File d'attente</h2>
+    {% if files %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Salle</th>
+                        <th>Motif</th>
+                        <th>Priorité</th>
+                        <th>Statut</th>
+                        <th>Arrivée</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entree in files %}
+                        <tr>
+                            <td>{{ entree.patient }}</td>
+                            <td>{{ entree.salle_attente }}</td>
+                            <td>{{ entree.motif|default:'—' }}</td>
+                            <td><span class="badge">{{ entree.get_priorite_display }}</span></td>
+                            <td><span class="badge">{{ entree.get_statut_display }}</span></td>
+                            <td>{{ entree.heure_arrivee|date:"d/m/Y H:i" }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=entree edit_url_name='file_attente_update' delete_url_name='file_attente_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucun patient en attente pour le moment.</div>
+    {% endif %}
+</div>
+{% endblock %}

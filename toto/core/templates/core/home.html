@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="hero-card hero-welcome">
+    <div class="hero-header">
+        <span class="hero-kicker">{% trans "Plateforme médicale" %}</span>
+        <h1>{% trans "Gestion Hospitalière" %}</h1>
+        <p>{% trans "Bienvenue — sélectionnez un module pour commencer." %}</p>
+    </div>
+
+    <div class="links-grid links-grid-modules">
+        <a class="link-card module-card" href="{% url 'dashboard' %}"><span class="module-icon">📊</span>{% trans "Tableau de bord" %}</a>
+        <a class="link-card module-card" href="{% url 'patients' %}"><span class="module-icon">🧑‍⚕️</span>{% trans "Patients" %}</a>
+        <a class="link-card module-card" href="{% url 'medecins' %}"><span class="module-icon">👨‍⚕️</span>{% trans "Médecins" %}</a>
+        <a class="link-card module-card" href="{% url 'infirmiers' %}"><span class="module-icon">👩‍⚕️</span>{% trans "Infirmiers" %}</a>
+        <a class="link-card module-card" href="{% url 'secretaires' %}"><span class="module-icon">📋</span>{% trans "Secrétaires" %}</a>
+        <a class="link-card module-card" href="{% url 'agenda' %}"><span class="module-icon">📅</span>{% trans "Agenda" %}</a>
+        <a class="link-card module-card" href="{% url 'salles_urgence' %}"><span class="module-icon">🚑</span>{% trans "Salles d'urgence" %}</a>
+        <a class="link-card module-card" href="{% url 'salles_attente' %}"><span class="module-icon">🪑</span>{% trans "Salles d'attente" %}</a>
+        <a class="link-card module-card" href="{% url 'consultations' %}"><span class="module-icon">🩺</span>{% trans "Consultations" %}</a>
+        <a class="link-card module-card" href="{% url 'hospitalisation' %}"><span class="module-icon">🏥</span>{% trans "Hospitalisation" %}</a>
+        <a class="link-card module-card" href="{% url 'laboratoire' %}"><span class="module-icon">🔬</span>{% trans "Laboratoire" %}</a>
+        <a class="link-card module-card" href="{% url 'pharmacie' %}"><span class="module-icon">💊</span>{% trans "Pharmacie" %}</a>
+        <a class="link-card module-card" href="{% url 'factures' %}"><span class="module-icon">🧾</span>{% trans "Factures" %}</a>
+        <a class="link-card module-card" href="{% url 'paiement' %}"><span class="module-icon">💳</span>{% trans "Paiements" %}</a>
+        <a class="link-card module-card" href="{% url 'services' %}"><span class="module-icon">⚙️</span>{% trans "Services" %}</a>
+        <a class="link-card module-card" href="{% url 'geolocalisation' %}"><span class="module-icon">📍</span>{% trans "Géolocalisation" %}</a>
+        <a class="link-card module-card module-card-alt" href="/admin/"><span class="module-icon">🛠️</span>{% trans "Administration" %}</a>
+    </div>
+</div>
+{% endblock %}

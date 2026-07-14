@@ -1,0 +1,14 @@
+name: gestion_hospitaliere_mobile
+description: Minimal Flutter client to authenticate against the Django backend and fetch a token.
+publish_to: 'none'
+version: 0.1.0
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.6
+
+flutter:
+  uses-material-design: true

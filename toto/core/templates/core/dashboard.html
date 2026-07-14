@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="hero-card">
+    <div class="page-header">
+        <div>
+            <span class="hero-kicker">{% trans "Indicateurs" %}</span>
+            <h1>{% trans "Tableau de bord administratif" %}</h1>
+            <p>{% trans "Vue d'ensemble de l'activité médicale et hospitalière — patients, lits, consultations et examens en temps réel." %}</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    <div class="links-grid kpi-grid">
+        <div class="link-card kpi-card">
+            <span class="kpi-value">{{ kpis.patients_actifs }}</span>
+            <span class="kpi-label">{% trans "Patients actifs" %}</span>
+        </div>
+        <div class="link-card kpi-card">
+            <span class="kpi-value">{{ kpis.taux_occupation }}%</span>
+            <span class="kpi-label">{% trans "Taux d'occupation" %}</span>
+        </div>
+        <div class="link-card kpi-card">
+            <span class="kpi-value">{{ kpis.recettes_mois }}</span>
+            <span class="kpi-label">{% trans "Recettes du mois (FCFA)" %}</span>
+        </div>
+        <div class="link-card kpi-card">
+            <span class="kpi-value">{{ kpis.examens_en_attente }}</span>
+            <span class="kpi-label">{% trans "Examens en attente" %}</span>
+        </div>
+        <div class="link-card kpi-card">
+            <span class="kpi-value">{{ kpis.lits_disponibles }}</span>
+            <span class="kpi-label">{% trans "Lits disponibles" %}</span>
+        </div>
+        <div class="link-card kpi-card">
+            <span class="kpi-value">{{ kpis.consultations_du_jour }}</span>
+            <span class="kpi-label">{% trans "Consultations du jour" %}</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

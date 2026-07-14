@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Infirmiers(ères)</h1>
+            <p>Personnel infirmier, services, grades et gardes hospitalières.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='infirmier_create' %}
+
+    {% if infirmiers %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Matricule</th>
+                        <th>Service</th>
+                        <th>Grade</th>
+                        <th>Unité</th>
+                        <th>Garde</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Statut</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for infirmier in infirmiers %}
+                        <tr>
+                            <td>{{ infirmier.full_name }}</td>
+                            <td>{{ infirmier.matricule }}</td>
+                            <td>{{ infirmier.get_service_display }}</td>
+                            <td>{{ infirmier.get_grade_display }}</td>
+                            <td>{{ infirmier.unite|default:'—' }}</td>
+                            <td>{{ infirmier.shift|default:'—' }}</td>
+                            <td>{{ infirmier.email }}</td>
+                            <td>{{ infirmier.phone }}</td>
+                            <td><span class="badge">{{ infirmier.get_status_display }}</span></td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=infirmier edit_url_name='infirmier_update' delete_url_name='infirmier_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucun(e) infirmier(ère) n'est encore enregistré(e).</div>
+    {% endif %}
+</div>
+{% endblock %}

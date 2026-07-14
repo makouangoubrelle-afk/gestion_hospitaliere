@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Patients</h1>
+            <p>Liste des patients enregistrés dans le système.</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+
+    {% include 'core/partials/admin_toolbar.html' with add_url_name='patient_create' %}
+
+    {% if patients %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>ID patient</th>
+                        <th>Date de naissance</th>
+                        <th>Âge</th>
+                        <th>Ville</th>
+                        <th>Status</th>
+                        {% if is_admin_user %}<th>Actions</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                        <tr>
+                            <td>{{ patient.full_name }}</td>
+                            <td>{{ patient.patient_id }}</td>
+                            <td>{{ patient.date_of_birth }}</td>
+                            <td>{{ patient.age }}</td>
+                            <td>{{ patient.city }}</td>
+                            <td>{{ patient.get_status_display }}</td>
+                            {% include 'core/partials/admin_row_actions.html' with obj=patient edit_url_name='patient_update' delete_url_name='patient_delete' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">Aucun patient n'est encore enregistré.</div>
+    {% endif %}
+</div>
+{% endblock %}

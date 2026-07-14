@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <div>
+            <h1>Hospitalisation</h1>
+            <p>Structure : Bâtiment → Service → Chambre → Lit (1 lit = 1 patient max)</p>
+        </div>
+        {% include 'core/partials/home_icon_link.html' %}
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Lit</th>
+                    <th>Médecin référent</th>
+                    <th>Entrée</th>
+                    <th>Sortie prévue</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in hospitalisations %}
+                <tr>
+                    <td>{{ h.patient.full_name }}</td>
+                    <td>{{ h.lit }}</td>
+                    <td>{{ h.medecin_referent }}</td>
+                    <td>{{ h.date_entree|date:"d/m/Y H:i" }}</td>
+                    <td>{{ h.date_sortie_prevue|date:"d/m/Y" }}</td>
+                    <td><span class="badge">{{ h.get_statut_display }}</span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="empty-state">Aucune hospitalisation enregistrée.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
