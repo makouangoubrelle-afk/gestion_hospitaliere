@@ -7,7 +7,7 @@ services:
     rootDir: toto
     buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
     startCommand: "gunicorn toto.wsgi:application --bind 0.0.0.0:$PORT"
-    preDeployCommand: "python manage.py migrate --noinput && python manage.py seed_demo && python manage.py check"
+
     healthCheckPath: /api/v1/sante/
     envVars:
       - key: DJANGO_SETTINGS_MODULE
