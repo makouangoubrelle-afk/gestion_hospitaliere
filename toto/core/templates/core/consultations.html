@@ -4,6 +4,7 @@
 <div class="page-card">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">Activité clinique</span>
             <h1>Consultations</h1>
             <p>Liste des consultations enregistrées.</p>
         </div>
@@ -22,16 +23,16 @@
                         <th>Type de visite</th>
                         <th>Date</th>
                         <th>Durée</th>
-                        <th>Status</th>
+                        <th>Statut</th>
                         {% if is_admin_user %}<th>Actions</th>{% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for consultation in consultations %}
                         <tr>
-                            <td>{{ consultation.patient.full_name }}</td>
+                            <td class="cell-strong">{{ consultation.patient.full_name }}</td>
                             <td>{% if consultation.medecin %}{{ consultation.medecin.full_name }}{% else %}N/A{% endif %}</td>
-                            <td>{{ consultation.get_visit_type_display }}</td>
+                            <td><span class="badge badge-info">{{ consultation.get_visit_type_display }}</span></td>
                             <td>{{ consultation.appointment_date|date:'d/m/Y H:i' }}</td>
                             <td>{{ consultation.duration_minutes }} min</td>
                             <td><span class="badge">{{ consultation.get_status_display }}</span></td>

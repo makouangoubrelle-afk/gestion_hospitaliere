@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+*.log
+.pytest_cache/
+coverage/
+htmlcov/
+*.sqlite3
+*.db
+
+# Django
+staticfiles/
+media/
+*.pot
+*.mo
+
+# Environment variables
+.env
+.env.*
+
+# Virtual environments
+venv/
+.venv/
+
+# Node / Frontend
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
+frontend/.vite/
+
+# Flutter
+mobile/build/
+.mobile/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# Docker
+*.pid
+

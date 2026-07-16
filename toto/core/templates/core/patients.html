@@ -4,6 +4,7 @@
 <div class="page-card">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">Dossier patients</span>
             <h1>Patients</h1>
             <p>Liste des patients enregistrés dans le système.</p>
         </div>
@@ -22,19 +23,19 @@
                         <th>Date de naissance</th>
                         <th>Âge</th>
                         <th>Ville</th>
-                        <th>Status</th>
+                        <th>Statut</th>
                         {% if is_admin_user %}<th>Actions</th>{% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for patient in patients %}
                         <tr>
-                            <td>{{ patient.full_name }}</td>
-                            <td>{{ patient.patient_id }}</td>
+                            <td class="cell-strong">{{ patient.full_name }}</td>
+                            <td class="cell-muted">{{ patient.patient_id }}</td>
                             <td>{{ patient.date_of_birth }}</td>
                             <td>{{ patient.age }}</td>
                             <td>{{ patient.city }}</td>
-                            <td>{{ patient.get_status_display }}</td>
+                            <td><span class="badge">{{ patient.get_status_display }}</span></td>
                             {% include 'core/partials/admin_row_actions.html' with obj=patient edit_url_name='patient_update' delete_url_name='patient_delete' %}
                         </tr>
                     {% endfor %}

@@ -2,10 +2,16 @@
 {% load i18n %}
 
 {% block auth_content %}
-<h2 style="margin:0 0 0.35rem;font-size:1.45rem;font-weight:800;">{% trans "Connexion" %}</h2>
-<p style="margin:0 0 1.5rem;color:var(--text-muted);font-size:0.95rem;">{% trans "Une seule connexion pour tout le système SGHL" %}</p>
+<h2 class="auth-title">{% trans "Connexion" %}</h2>
+<p class="auth-subtitle">{% trans "Une seule connexion pour tout le système SGHL" %}</p>
 
-<form method="post" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">
+{% if form.errors %}
+<div class="empty-state empty-state-danger" style="margin-bottom:1rem;">
+    {% trans "Identifiants incorrects. Utilisez admin / admin1234 ou cliquez sur « Connexion démo »." %}
+</div>
+{% endif %}
+
+<form method="post" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}" id="loginForm" autocomplete="on">
     {% csrf_token %}
     {% if request.GET.next %}
     <input type="hidden" name="next" value="{{ request.GET.next }}">
@@ -27,22 +33,17 @@
     <button type="submit" class="submit-button">{% trans "Se connecter" %}</button>
 </form>
 
-<p style="margin-top:1.25rem;color:var(--text-muted);font-size:0.9rem;">
+<a href="{% url 'demo_login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}" class="submit-button btn-secondary" style="margin-top:0.75rem; text-decoration:none;">
+    {% trans "Connexion démo (admin) — 1 clic" %}
+</a>
+
+<p class="auth-link-text">
     {% trans "Pas encore de compte ?" %} <a href="{% url 'register' %}">{% trans "Créer un compte" %}</a>
 </p>
 
 <div class="demo-credentials">
     <strong>{% trans "Compte de démonstration" %}</strong>
-    <p>{% trans "Utilisateur" %} : <code>admin</code> — {% trans "Mot de passe" %} : <code>Admin123!</code></p>
+    <p>{% trans "Utilisateur" %} : <code>admin</code> — {% trans "Mot de passe" %} : <code>admin1234</code></p>
+    <p style="margin:0.5rem 0 0;font-size:0.82rem;">{% trans "Attention : désactivez la saisie automatique du navigateur si le mot de passe ne fonctionne pas." %}</p>
 </div>
-
-{% if form.errors %}
-<div class="empty-state">
-    {% if form.non_field_errors %}
-        {{ form.non_field_errors }}
-    {% else %}
-        {% trans "Identifiants incorrects. Vérifiez le nom d'utilisateur et le mot de passe." %}
-    {% endif %}
-</div>
-{% endif %}
 {% endblock %}

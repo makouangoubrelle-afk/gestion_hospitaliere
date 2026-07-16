@@ -41,9 +41,10 @@ def home(request):
 
 def _login_redirect_url(request, user=None):
     next_url = request.POST.get('next') or request.GET.get('next')
+    allowed = {request.get_host(), 'localhost', '127.0.0.1', 'localhost:8000', '127.0.0.1:8000'}
     if next_url and url_has_allowed_host_and_scheme(
         next_url,
-        allowed_hosts={request.get_host()},
+        allowed_hosts=allowed,
         require_https=request.is_secure(),
     ):
         return next_url
@@ -56,18 +57,55 @@ def user_login(request):
     if request.user.is_authenticated:
         return redirect(_login_redirect_url(request, request.user))
 
-    form = AuthenticationForm(request, data=request.POST or None)
+    form = AuthenticationForm(request)
+
+    if request.method == 'POST':
+        data = request.POST.copy()
+        data['username'] = data.get('username', '').strip()
+        data['password'] = data.get('password', '').strip()
+        form = AuthenticationForm(request, data=data)
+
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            return redirect(_login_redirect_url(request, form.get_user()))
+
     form.fields['username'].label = "Nom d'utilisateur"
     form.fields['password'].label = 'Mot de passe'
 
-    if request.method == 'POST' and form.is_valid():
-        auth_login(request, form.get_user())
-        return redirect(_login_redirect_url(request, form.get_user()))
-
     for field in form.fields.values():
         field.widget.attrs.setdefault('class', 'input-field')
+        if field.label == "Nom d'utilisateur":
+            field.widget.attrs.setdefault('placeholder', 'admin')
+            field.widget.attrs.setdefault('autocomplete', 'username')
+        if field.label == 'Mot de passe':
+            field.widget.attrs.setdefault('autocomplete', 'current-password')
 
     return render(request, 'registration/login.html', {'form': form})
+
+
+def demo_login(request):
+    """Connexion directe au compte admin (mode développement)."""
+    from django.conf import settings
+    from django.contrib.auth import get_user_model
+
+    if request.user.is_authenticated:
+        return redirect(_login_redirect_url(request, request.user))
+
+    if not settings.DEBUG:
+        from django.contrib import messages
+        messages.error(request, 'Connexion démo indisponible en production.')
+        return redirect('login')
+
+    User = get_user_model()
+    try:
+        user = User.objects.get(username='admin', is_active=True)
+    except User.DoesNotExist:
+        from django.contrib import messages
+        messages.error(request, 'Compte admin introuvable. Exécutez : python manage.py ensure_users')
+        return redirect('login')
+
+    auth_login(request, user)
+    return redirect(_login_redirect_url(request, user))
 
 
 def register(request):

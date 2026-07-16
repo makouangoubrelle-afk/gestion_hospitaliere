@@ -2,9 +2,10 @@
 {% load i18n %}
 
 {% block content %}
-<div class="page-card" style="max-width: 720px; margin: 0 auto;">
+<div class="page-card form-page-narrow">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">{% trans "Formulaire" %}</span>
             <h1>{{ title }}</h1>
             <p>{% trans "Réservé aux administrateurs" %}</p>
         </div>
@@ -26,8 +27,8 @@
         </div>
         {% endfor %}
         <div class="form-actions">
-            <button type="submit" class="submit-button" style="width:auto; padding: 0.75rem 2rem;">{% trans "Enregistrer" %}</button>
-            <a href="{% url cancel_url %}" class="button-link" style="background:#64748b; box-shadow:none;">{% trans "Annuler" %}</a>
+            <button type="submit" class="submit-button">{% trans "Enregistrer" %}</button>
+            <a href="{% url cancel_url %}" class="button-link btn-secondary">{% trans "Annuler" %}</a>
         </div>
     </form>
 </div>

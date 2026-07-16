@@ -4,6 +4,7 @@
 <div class="page-card">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">Personnel médical</span>
             <h1>Médecins</h1>
             <p>Liste des médecins disponibles dans l'hôpital.</p>
         </div>
@@ -22,19 +23,19 @@
                         <th>Département</th>
                         <th>Email</th>
                         <th>Téléphone</th>
-                        <th>Status</th>
+                        <th>Statut</th>
                         {% if is_admin_user %}<th>Actions</th>{% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for medecin in medecins %}
                         <tr>
-                            <td>{{ medecin.full_name }}</td>
-                            <td>{{ medecin.get_specialty_display }}</td>
+                            <td class="cell-strong">{{ medecin.full_name }}</td>
+                            <td><span class="badge badge-info">{{ medecin.get_specialty_display }}</span></td>
                             <td>{{ medecin.department }}</td>
-                            <td>{{ medecin.email }}</td>
+                            <td class="cell-muted">{{ medecin.email }}</td>
                             <td>{{ medecin.phone }}</td>
-                            <td>{{ medecin.get_status_display }}</td>
+                            <td><span class="badge badge-success">{{ medecin.get_status_display }}</span></td>
                             {% include 'core/partials/admin_row_actions.html' with obj=medecin edit_url_name='medecin_update' delete_url_name='medecin_delete' %}
                         </tr>
                     {% endfor %}

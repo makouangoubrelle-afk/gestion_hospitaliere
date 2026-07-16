@@ -8,11 +8,11 @@ class Command(BaseCommand):
     help = 'Crée ou réinitialise les comptes de connexion SGHL'
 
     ACCOUNTS = [
-        ('admin', 'Admin123!', Role.ADMIN, 'admin@sghl.sn'),
-        ('medecin', 'Medecin123!', Role.MEDECIN, 'medecin@sghl.sn'),
-        ('biologiste', 'Bio123!', Role.BIOLOGISTE, 'bio@sghl.sn'),
-        ('patient', 'Patient123!', Role.PATIENT, 'patient@sghl.sn'),
-        ('secretaire', 'Secretaire123!', Role.SECRETAIRE, 'secretaire@sghl.sn'),
+        ('admin', 'admin1234', Role.ADMIN, 'admin@sghl.sn'),
+        ('medecin', 'medecin1234', Role.MEDECIN, 'medecin@sghl.sn'),
+        ('biologiste', 'bio1234', Role.BIOLOGISTE, 'bio@sghl.sn'),
+        ('patient', 'patient1234', Role.PATIENT, 'patient@sghl.sn'),
+        ('secretaire', 'secretaire1234', Role.SECRETAIRE, 'secretaire@sghl.sn'),
     ]
 
     def handle(self, *args, **options):
@@ -33,4 +33,4 @@ class Command(BaseCommand):
             action = 'créé' if created else 'réinitialisé'
             self.stdout.write(f'  {username} — {action}')
 
-        self.stdout.write(self.style.SUCCESS('Comptes prêts. Connexion : admin / Admin123!'))
+        self.stdout.write(self.style.SUCCESS('Comptes prêts. Connexion : admin / admin1234'))

@@ -2,22 +2,23 @@
 {% load i18n %}
 
 {% block content %}
-<div class="page-card" style="max-width: 520px; margin: 0 auto;">
+<div class="page-card confirm-page-narrow">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">{% trans "Attention" %}</span>
             <h1>{% trans "Confirmer la suppression" %}</h1>
             <p>{% trans "Cette action est irréversible." %}</p>
         </div>
     </div>
 
-    <div class="empty-state" style="border-color:#fca5a5; background:#fef2f2; color:#991b1b; margin-bottom:1.25rem;">
+    <div class="empty-state empty-state-danger">
         {% trans "Voulez-vous vraiment supprimer" %} <strong>{{ object_label }}</strong> ?
     </div>
 
-    <form method="post" class="form-actions" style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+    <form method="post" class="form-actions">
         {% csrf_token %}
-        <button type="submit" class="submit-button" style="width:auto; background:#dc2626; box-shadow:none;">{% trans "Oui, supprimer" %}</button>
-        <a href="javascript:history.back()" class="button-link" style="background:#64748b; box-shadow:none;">{% trans "Annuler" %}</a>
+        <button type="submit" class="submit-button btn-danger">{% trans "Oui, supprimer" %}</button>
+        <a href="javascript:history.back()" class="button-link btn-secondary">{% trans "Annuler" %}</a>
     </form>
 </div>
 {% endblock %}

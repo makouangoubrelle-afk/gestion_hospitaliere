@@ -4,6 +4,7 @@
 <div class="page-card">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">Personnel soignant</span>
             <h1>Infirmiers(ères)</h1>
             <p>Personnel infirmier, services, grades et gardes hospitalières.</p>
         </div>
@@ -32,15 +33,15 @@
                 <tbody>
                     {% for infirmier in infirmiers %}
                         <tr>
-                            <td>{{ infirmier.full_name }}</td>
-                            <td>{{ infirmier.matricule }}</td>
-                            <td>{{ infirmier.get_service_display }}</td>
+                            <td class="cell-strong">{{ infirmier.full_name }}</td>
+                            <td class="cell-muted">{{ infirmier.matricule }}</td>
+                            <td><span class="badge badge-info">{{ infirmier.get_service_display }}</span></td>
                             <td>{{ infirmier.get_grade_display }}</td>
                             <td>{{ infirmier.unite|default:'—' }}</td>
                             <td>{{ infirmier.shift|default:'—' }}</td>
-                            <td>{{ infirmier.email }}</td>
+                            <td class="cell-muted">{{ infirmier.email }}</td>
                             <td>{{ infirmier.phone }}</td>
-                            <td><span class="badge">{{ infirmier.get_status_display }}</span></td>
+                            <td><span class="badge badge-success">{{ infirmier.get_status_display }}</span></td>
                             {% include 'core/partials/admin_row_actions.html' with obj=infirmier edit_url_name='infirmier_update' delete_url_name='infirmier_delete' %}
                         </tr>
                     {% endfor %}

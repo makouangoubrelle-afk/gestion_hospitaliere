@@ -2,8 +2,8 @@
 {% load i18n %}
 
 {% block auth_content %}
-<h2 style="margin:0 0 0.35rem;font-size:1.45rem;font-weight:800;">{% trans "Inscription" %}</h2>
-<p style="margin:0 0 1.5rem;color:var(--text-muted);font-size:0.95rem;">{% trans "Créez votre compte SGHL" %}</p>
+<h2 class="auth-title">{% trans "Inscription" %}</h2>
+<p class="auth-subtitle">{% trans "Créez votre compte SGHL" %}</p>
 
 <form method="post" action="{% url 'register' %}">
     {% csrf_token %}
@@ -34,7 +34,7 @@
     <button type="submit" class="submit-button">{% trans "Créer un compte" %}</button>
 </form>
 
-<p style="margin-top:1.25rem;color:var(--text-muted);font-size:0.9rem;">
+<p class="auth-link-text">
     {% trans "Déjà inscrit ?" %} <a href="{% url 'login' %}">{% trans "Se connecter" %}</a>
 </p>
 {% endblock %}

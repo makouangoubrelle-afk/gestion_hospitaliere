@@ -4,6 +4,7 @@
 <div class="page-card payment-page">
     <div class="page-header">
         <div>
+            <span class="hero-kicker">Paiement sécurisé</span>
             <h1>Payer la facture</h1>
             <p>{{ invoice.invoice_number }} — {{ invoice.patient.full_name }}</p>
         </div>
@@ -87,73 +88,10 @@
 
         <div class="form-actions">
             <button type="submit" class="submit-button pay-submit">Confirmer le paiement</button>
-            <a href="{% url 'facture_detail' invoice.id %}" class="button-link" style="background:#64748b; box-shadow:none;">Annuler</a>
+            <a href="{% url 'facture_detail' invoice.id %}" class="button-link btn-secondary">Annuler</a>
         </div>
     </form>
 </div>
-
-<style>
-    .payment-page { max-width: 820px; margin: 0 auto; }
-    .pay-amount-banner {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        padding: 1.25rem 1.5rem;
-        background: linear-gradient(135deg, #1e3a5f, #2563eb);
-        color: white;
-        border-radius: 14px;
-        margin-bottom: 1.75rem;
-    }
-    .pay-amount-banner span { display: block; font-size: 0.8rem; opacity: 0.85; }
-    .pay-amount-banner strong { font-size: 1.35rem; }
-    .section-title { font-size: 1.05rem; font-weight: 700; margin: 0 0 1rem; }
-    .payment-methods {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-        gap: 0.85rem;
-        margin-bottom: 1.5rem;
-    }
-    .method-card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 1.1rem 0.75rem;
-        border: 2px solid var(--border);
-        border-radius: 14px;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-align: center;
-        background: #fff;
-    }
-    .method-card input { position: absolute; opacity: 0; }
-    .method-card:has(input:checked) {
-        border-color: var(--primary);
-        background: var(--primary-light);
-        box-shadow: var(--shadow-sm);
-    }
-    .method-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 0.9rem;
-        color: white;
-    }
-    .method-icon.card { background: linear-gradient(135deg, #6366f1, #4f46e5); font-size: 1.4rem; }
-    .method-icon.airtel { background: linear-gradient(135deg, #ef4444, #dc2626); }
-    .method-icon.mtn { background: linear-gradient(135deg, #facc15, #ca8a04); color: #1e293b; font-size: 0.75rem; }
-    .method-name { font-weight: 700; font-size: 0.9rem; color: var(--text); }
-    .method-desc { font-size: 0.75rem; color: var(--text-muted); }
-    .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .pay-submit { width: auto !important; padding: 0.85rem 2rem !important; background: linear-gradient(135deg, #059669, #10b981) !important; }
-    .secure-note { margin-top: 0.5rem; }
-    .form-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem; }
-</style>
 
 <script>
 (function () {

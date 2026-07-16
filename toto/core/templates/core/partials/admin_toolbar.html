@@ -1,5 +1,7 @@
 {% if is_admin_user %}
 <div class="admin-toolbar">
-    <a href="{% url add_url_name %}" class="button-link">+ Ajouter</a>
+    <a href="{% url add_url_name %}" class="button-link">
+        <span aria-hidden="true">＋</span> Ajouter
+    </a>
 </div>
 {% endif %}

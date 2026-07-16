@@ -17,14 +17,22 @@ class CoreConfig(AppConfig):
     def _ensure_database_tables(self):
         if 'runserver' not in sys.argv:
             return
-        skip = {'migrate', 'makemigrations'}
+        skip = {'migrate', 'makemigrations', 'test', 'pytest'}
         if skip.intersection(sys.argv):
             return
-        try:
-            from django.core.management import call_command
-            call_command('migrate', '--noinput', verbosity=0)
-        except Exception:
-            pass
+        if os.environ.get('RUN_MAIN') != 'true':
+            return
+
+        import threading
+
+        def _migrate():
+            try:
+                from django.core.management import call_command
+                call_command('migrate', '--noinput', verbosity=0)
+            except Exception:
+                pass
+
+        threading.Thread(target=_migrate, daemon=True).start()
 
     def _compile_translations(self):
         try:

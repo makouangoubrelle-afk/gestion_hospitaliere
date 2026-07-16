@@ -38,5 +38,13 @@
             <span class="kpi-label">{% trans "Consultations du jour" %}</span>
         </div>
     </div>
+
+    <div class="invoice-actions" style="border-top:none; padding-top:1.5rem; margin-top:0.5rem;">
+        <a href="{% url 'patients' %}" class="button-link">Patients</a>
+        <a href="{% url 'consultations' %}" class="button-link btn-outline">Consultations</a>
+        <a href="{% url 'factures' %}" class="button-link btn-success">Factures</a>
+        <a href="{% url 'pharmacie' %}" class="button-link btn-secondary">Pharmacie</a>
+        <a href="{% url 'laboratoire' %}" class="button-link btn-warning">Laboratoire</a>
+    </div>
 </div>
 {% endblock %}

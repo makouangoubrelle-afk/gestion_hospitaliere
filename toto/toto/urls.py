@@ -18,6 +18,7 @@ from core import payment_views
 from core.views import (
     home,
     user_login,
+    demo_login,
     register,
     patients_list,
     medecins_list,
@@ -60,6 +61,7 @@ urlpatterns = [
     path('api/v1/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('login/', user_login, name='login'),
+    path('login/demo/', demo_login, name='demo_login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', register, name='register'),
     path('', home, name='home'),

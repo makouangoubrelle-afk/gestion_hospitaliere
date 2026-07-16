@@ -4,7 +4,8 @@
 <div class="page-card">
     <div class="page-header">
         <div>
-            <h1>Facture {{ invoice.invoice_number }}</h1>
+            <span class="hero-kicker">Facture</span>
+            <h1>{{ invoice.invoice_number }}</h1>
             <p>{{ invoice.patient.full_name }} — émise le {{ invoice.issue_date|date:"d/m/Y" }}</p>
         </div>
         {% include 'core/partials/home_icon_link.html' %}
@@ -50,8 +51,8 @@
                 <tr>
                     <td>{{ item.description }}</td>
                     <td>{{ item.quantity }}</td>
-                    <td>{{ item.unit_price }} FCFA</td>
-                    <td>{{ item.subtotal }} FCFA</td>
+                    <td class="cell-money">{{ item.unit_price }} FCFA</td>
+                    <td class="cell-money">{{ item.subtotal }} FCFA</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -77,11 +78,11 @@
                 {% for payment in invoice.payments.all %}
                 <tr>
                     <td>{{ payment.transaction_id|default:'—' }}</td>
-                    <td>{{ payment.amount }} FCFA</td>
+                    <td class="cell-money">{{ payment.amount }} FCFA</td>
                     <td>{{ payment.get_payment_method_display }}</td>
                     <td>{{ payment.phone_number|default:'—' }}</td>
                     <td>{% if payment.payment_date %}{{ payment.payment_date|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
-                    <td><span class="badge">{{ payment.get_status_display }}</span></td>
+                    <td><span class="badge badge-success">{{ payment.get_status_display }}</span></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -92,45 +93,11 @@
     {% endif %}
 
     <div class="invoice-actions">
-        <a href="{% url 'invoice_pdf' invoice.id %}" class="button-link" target="_blank">Télécharger PDF</a>
+        <a href="{% url 'invoice_pdf' invoice.id %}" class="button-link" target="_blank">📄 Télécharger PDF</a>
         {% if invoice.remaining_amount > 0 and invoice.status != 'cancelled' %}
-        <a href="{% url 'invoice_pay' invoice.id %}" class="button-link pay-btn">Payer en ligne</a>
+        <a href="{% url 'invoice_pay' invoice.id %}" class="button-link pay-btn">💳 Payer en ligne</a>
         {% endif %}
-        <a href="{% url 'factures' %}" class="button-link" style="background:#64748b; box-shadow:none;">Retour aux factures</a>
+        <a href="{% url 'factures' %}" class="button-link btn-secondary">← Retour aux factures</a>
     </div>
 </div>
-
-<style>
-    .invoice-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    .summary-box {
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-    }
-    .summary-box.highlight {
-        background: linear-gradient(135deg, #dbeafe, #cffafe);
-        border-color: #93c5fd;
-    }
-    .summary-label { font-size: 0.8rem; color: var(--text-muted); }
-    .invoice-desc { color: var(--text-muted); margin-bottom: 1rem; }
-    .section-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 1rem; }
-    .invoice-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 2rem;
-    }
-    .pay-btn {
-        background: linear-gradient(135deg, #059669, #10b981) !important;
-    }
-</style>
 {% endblock %}
