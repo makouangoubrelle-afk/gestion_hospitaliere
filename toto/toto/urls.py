@@ -65,6 +65,7 @@ urlpatterns = [
     path('login/demo/', demo_login, name='demo_login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', register, name='register'),
+    path('mobile', RedirectView.as_view(url='/mobile/', permanent=False)),
     path('mobile/', mobile_views.mobile_index, name='mobile_app'),
     path('mobile/<path:path>', mobile_views.mobile_asset, name='mobile_asset'),
     path('', home, name='home'),
