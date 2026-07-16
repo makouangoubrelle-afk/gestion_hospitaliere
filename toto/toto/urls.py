@@ -15,6 +15,7 @@ from django.views.generic import RedirectView
 from core.ninja_api import api
 from core import crud_views
 from core import payment_views
+from core import mobile_views
 from core.views import (
     home,
     user_login,
@@ -64,6 +65,8 @@ urlpatterns = [
     path('login/demo/', demo_login, name='demo_login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', register, name='register'),
+    path('mobile/', mobile_views.mobile_index, name='mobile_app'),
+    path('mobile/<path:path>', mobile_views.mobile_asset, name='mobile_asset'),
     path('', home, name='home'),
     path('dashboard/', dashboard, name='dashboard'),
     path('patients/', patients_list, name='patients'),

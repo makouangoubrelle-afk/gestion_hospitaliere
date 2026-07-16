@@ -41,6 +41,7 @@
                 <a href="{% url 'factures' %}">{% trans "Factures" %}</a>
                 <a href="{% url 'paiement' %}">{% trans "Paiements" %}</a>
                 <a href="{% url 'geolocalisation' %}">{% trans "Géolocalisation" %}</a>
+                <a href="{% url 'mobile_app' %}">{% trans "Mobile" %}</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'logout' %}" class="nav-logout">{% trans "Déconnexion" %}</a>
                 {% else %}

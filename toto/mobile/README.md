@@ -1,33 +1,37 @@
-# Mobile client (Flutter)
+# SGHL — Application mobile patient
 
-This folder contains a minimal Flutter client that authenticates with the Django backend using token auth.
+## Lien web (recommandé)
 
-Quick start (requires Flutter SDK installed):
+Avec le serveur Django lancé :
 
-1. Open a terminal and go to `mobile/`:
+**http://127.0.0.1:8000/mobile/**
+
+Sur Render (après déploiement) :
+
+**https://sg-hospitaliere.onrender.com/mobile/**
+
+Compte démo : `patient` / `patient1234`
+
+## Lancer en local (émulateur / téléphone)
 
 ```bash
-cd mobile
+cd toto
+python manage.py runserver
 ```
 
-2. Get packages:
+Dans un autre terminal :
 
 ```bash
+cd toto/mobile
 flutter pub get
-```
-
-3. Run on Android emulator (ensure your Django server is running on the host at port 8000). On the Android emulator, `localhost` is `10.0.2.2`.
-
-```bash
 flutter run
 ```
 
-4. By default the app points to `http://10.0.2.2:8000` (see `lib/api.dart`). Change `baseUrl` if your backend is remote.
-
-Building an APK:
+## Rebuild web (après modification Flutter)
 
 ```bash
-flutter build apk --release
+cd toto/mobile
+flutter build web --release --base-href /mobile/ --output ../mobile_dist
 ```
 
-Then install the APK on a device with `adb install build/app/outputs/flutter-apk/app-release.apk`.
+Puis redémarrer Django. Le dossier `mobile_dist/` est servi sous `/mobile/`.

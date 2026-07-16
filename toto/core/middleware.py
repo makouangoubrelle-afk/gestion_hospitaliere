@@ -16,6 +16,7 @@ class LoginRequiredMiddleware:
         '/i18n/',
         '/static/',
         '/api/',
+        '/mobile',
     )
 
     def __init__(self, get_response):
